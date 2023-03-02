@@ -7,10 +7,6 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_PCD8544.h>
 
-
-
-//void displayInit(Adafruit_PCD8544 * );
-
 struct estadosTeclas_t
 {
   bool Aceptar = 0;
@@ -18,6 +14,25 @@ struct estadosTeclas_t
   bool Mas = 0;
   bool Menos = 0;
 };
+
+class Interfaz_hm 
+{
+  public:
+  Adafruit_PCD8544 display = Adafruit_PCD8544(LCD_CLK,LCD_DIN,LCD_DC,LCD_CE,LCD_RST);
+
+  void DisplayInit();
+  
+  void DisplayClear ( );
+  void DisplayCursor ( int x, int y );
+  void DisplayPrint ( char *);
+
+
+};
+
+
+
+
+
 
 bool teclaPulsada (tecla_t );
 

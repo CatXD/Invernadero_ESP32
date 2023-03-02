@@ -17,12 +17,8 @@ ESP32Time rtc;
 TaskHandle_t _tarea2;
 
 
+Interfaz_hm interfaz;
 
-Adafruit_PCD8544 display = Adafruit_PCD8544(LCD_CLK,LCD_DIN,LCD_DC,LCD_CE,LCD_RST);
-void displayInit( )
- {
-
- }
 
 void setup ()
 {
@@ -33,14 +29,6 @@ void setup ()
   pinMode(ACT_Res14, OUTPUT);   
   pinMode(ACT_Res16, OUTPUT);   
   pinMode(ACT_Luz, OUTPUT);   
-
-  display.begin();
-  display.setContrast(60); //setContrast(50);
-
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setTextColor(BLACK);
-
 
 
 
@@ -63,23 +51,18 @@ void setup ()
       0); // Core where the task should run 
       //coreTask2); // Core where the task should run 
       
+  interfaz.DisplayInit();
+  interfaz.DisplayPrint ("AAA");
 
-    display.clearDisplay();
-    display.setTextSize(1); 
-    display.setTextColor(BLACK);
-    display.setCursor(10,10);
-    display.println("Hola!");
-    display.display();
-
+  pinMode ( LCD_LIGHT, OUTPUT);
 }
-  bool a, a2;
+  bool a=0, a2=0;
 
 void loop(  )
 {
  a2 = !a2;
  digitalWrite ( ACT_Luz, a2);
     delay(1000);//wait ls to refresh
-  digitalWrite(LCD_LIGHT, 1);
 }
 
 

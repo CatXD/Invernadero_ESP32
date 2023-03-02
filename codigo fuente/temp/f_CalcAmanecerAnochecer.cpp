@@ -6,14 +6,14 @@ float CalcHoraAmanecer (int mes, int dia)
 //amanecer - otono: y = 0,0214 (x + 6) + 0,2241
 //anochecer - otono: y = -0,0264 (x + 6) + 0,8899
 
-mes = mes + dia / 30f;
+mes = mes + dia / 30.0;
 
 float hora, hora_norm;
 
 if (mes < 7)
     hora_norm = -0.0258 * mes + 0.3843;
 else
-    hora_norm = 0.0214 (mes + 6) + 0.2241;
+    hora_norm = 0.0214 *(mes + 6) + 0.2241;
 
 hora = hora_norm * 24;
 return hora;
@@ -28,14 +28,14 @@ float CalcHoraAnochecer (int mes, int dia)
 //amanecer - otono: y = 0,0214 (x + 6) + 0,2241
 //anochecer - otono: y = -0,0264 (x + 6) + 0,8899
 
-mes = mes + dia / 30f;
+mes = mes + dia / 30.0;
 
 float hora, hora_norm;
 
 if (mes < 7)
     hora_norm = 0.0217 * mes + 0.7404;
 else
-    hora_norm = -0.0264 (mes + 6) + 0.8899;
+    hora_norm = -0.0264 *(mes + 6) + 0.8899;
 
 hora = hora_norm * 24;
 return hora;
