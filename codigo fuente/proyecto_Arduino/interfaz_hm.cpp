@@ -1,8 +1,6 @@
 #include "interfaz_hm.h"
 
 
-
-
 void Interfaz_hm::DisplayInit()
  {
   
@@ -35,17 +33,3 @@ void Interfaz_hm::DisplayPrint (char* cadena)
     display.display();
 }
 
- bool teclaPulsada (tecla_t tecla)
-{
-  bool pulsada = 0;
-  while (digitalRead(tecla))
-  {
-    pulsada = 1;
-    delay(5);
-  }
-  while (!digitalRead(tecla))
-  {
-    delay(5);
-  }
-  return pulsada;
-}

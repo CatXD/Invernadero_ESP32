@@ -1,5 +1,11 @@
+#include <Arduino.h>
+#include <sdkconfig.h>
+#include <esp_system.h>
+
+
 #ifndef DEFPINES_H
 #define DEFPINES_H
+
 
 #define LCD_CLK 18
 #define LCD_DIN 23
@@ -15,7 +21,17 @@
 #define ACT_Luz 27
 
 
-enum tecla_t { NINGUNA = 0, ACEPTAR = 32, CANCELAR = 33, MAS = 35, MENOS = 34 };
+#define TECLADO_NUM_FILAS 2
+#define TECLADO_NUM_COLUM 2
+#define TECLADO_F1 32
+#define TECLADO_F2 33
+#define TECLADO_C1 34
+#define TECLADO_C2 35
+
+#define PILOTO_HUM 00
+
+
+
 
 
 
