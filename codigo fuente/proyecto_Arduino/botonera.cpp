@@ -11,10 +11,10 @@
 
   pinMode(gpio_y, OUTPUT);
   pinMode(gpio_x, INPUT);
-  digitalWrite(gpio_x, 1);
-  delay(1);
+  digitalWrite(gpio_y, 1);
+  delay(10);
 
-  estado = digitalRead(gpio_y);
+  estado = digitalRead(gpio_x);
 
   digitalWrite(gpio_x, 0);
   pinMode(gpio_y, INPUT);
@@ -25,28 +25,36 @@
 
 
 //Si encuentra una tecla pulsada, devuelve su identificar. Si no, -1.
-
  tecla_t Botonera::MuestrearBotonera()
  {
+  tecla_t preteclaPulsada;
   tecla_t id_tecla;
-   for (int i = 0; i < TECLADO_NUM_FILAS; i++)
-   {
-     for (int j = 0; j < TECLADO_NUM_COLUM; j++)
-     {
-       if (ComprobarBotonPosXY (i, j))
-       {
-        id_tecla = tecla_t (i * TECLADO_NUM_FILAS + j);
-        TeclaPulsada = id_tecla;
-        return id_tecla;
-       }
-     }
-   }
-   id_tecla = TECLA_NINGUNA;
-   return TECLA_NINGUNA;
- }
+  bool encontrado = false;
 
+  int i = 0;
 
-  tecla_t Botonera::GetTeclaPulsada()
+  while ( i < TECLADO_NUM_FILAS*TECLADO_NUM_COLUM && ! encontrado)
   {
-    return TeclaPulsada;
+    encontrado = ComprobarBotonPosXY (i/TECLADO_NUM_FILAS, i%TECLADO_NUM_FILAS);
+    if (!encontrado)
+      i++;
   }
+  
+  if ( i == TECLADO_NUM_FILAS*TECLADO_NUM_COLUM)
+  {
+    TeclaEstadoAns = TECLA_NINGUNA;
+    return TECLA_NINGUNA;
+  }
+
+  id_tecla = tecla_t(i);
+  if (TeclaEstadoAns != id_tecla) //Detecto cambio
+  {
+    TeclaEstadoAns = id_tecla;
+    return id_tecla;
+  }
+
+  TeclaEstadoAns = id_tecla;
+  return TECLA_NINGUNA;
+ }
+    
+

@@ -11,12 +11,69 @@ Autor: Diego Carro Fernandez
 
 ESP32Time rtc;
 
-
 TaskHandle_t _tarea2;
-
 
 Interfaz_hm interfaz;
 
+int contador = 0;
+char buffer [20];
+    bool a=0;
+void setup ()
+{
+  Serial.begin(115200);
+
+  pinMode(ACT_Res14, OUTPUT);   
+  pinMode(ACT_Res16, OUTPUT);   
+  pinMode(ACT_Luz, OUTPUT);   
+
+      
+  interfaz.DisplayInit();
+
+
+
+
+    sprintf ( buffer, "%d", contador);
+    interfaz.DisplayClear();
+    interfaz.DisplayPrint(buffer, 0,0);
+
+
+  pinMode(ACT_Res14, OUTPUT);   
+
+
+  // interfaz.DisplayClear();
+  // interfaz.DisplayPrint ("SE HA ACABADO", 0, 0);
+}
+  tecla_t tecla = TECLA_NINGUNA;
+bool b = false;
+void loop(  )
+{
+
+    digitalWrite(ACT_Res14, 1);
+    tecla =TECLA_NINGUNA;
+    while (tecla == TECLA_NINGUNA)
+      tecla = interfaz.botonera.MuestrearBotonera();
+    digitalWrite(ACT_Res14, 0);
+
+    if (tecla == TECLA_MAS)
+      contador++;
+    if (tecla == TECLA_MENOS)
+      contador--;
+
+    if (ACT_Res14,tecla != TECLA_NINGUNA )
+    {
+       b = !b;
+      digitalWrite(ACT_Res14, b);
+    }
+
+
+    sprintf ( buffer, "%d", contador);
+    interfaz.DisplayClear();
+    interfaz.DisplayPrint(buffer, 0,0);
+    delay(10);
+
+}
+
+/*
 
 void setup ()
 {
@@ -53,6 +110,13 @@ void setup ()
   interfaz.DisplayPrint ("AAAAAAA");
 
   pinMode ( LCD_LIGHT, OUTPUT);
+
+  Tiempo_t ahora;
+  ahora.ano = 2000;
+  interfaz.MenuGetTiempo (ahora);
+
+  interfaz.DisplayClear();
+  interfaz.DisplayPrint ("SE HA ACABADO", 0, 0);
 }
   bool a=0, a2=0;
 char  stringBuffer[20];
@@ -63,13 +127,9 @@ void loop(  )
  a2 = !a2;
  digitalWrite ( ACT_Luz, a2);
 
-  aaa = rtc.getTime("%A, %B %d %Y %H:%M:%S") ;
-
-  interfaz.DisplayClear ( );
- interfaz.DisplayPrint (aaa, 0, 0);
-
-
     delay(1000);//wait ls to refresh
+
+
 }
 
 
@@ -89,3 +149,5 @@ void Tarea2 (void*)
     loop2();
   }
 }
+
+*/

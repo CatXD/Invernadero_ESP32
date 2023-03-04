@@ -2,6 +2,7 @@
 #define INTERFAZHM_H
 
 #include "def_pines.h"
+#include "curvasLuz.h"
 
 #include <SPI.h>
 #include <Adafruit_GFX.h>
@@ -18,11 +19,25 @@ class Interfaz_hm
   void DisplayCursor ( int x, int y );
   void DisplayPrint ( char* cadena );
   void DisplayPrint (char* cadena, int x, int y);
-    void DisplayPrint ( String cadena);
+  void DisplayPrint ( String cadena);
   void DisplayPrint (String cadena, int x, int y);
   void DisplayLuzFondo (bool OnOff);
+  void DisplayApagar();
+
+  void Espera10ms ();
+  void Espera1s ();
+
+  void DisplayFechaYHora (Tiempo_t fecha);
+  void DisplayFechaYHora (int dia, int mes, int ano, int hora, int min, int sec);
+
 
   //Botonera
+  Botonera botonera;
+
+  //Configurar Hora
+  Tiempo_t MenuGetTiempo (Tiempo_t ahora);
+
+
 
 
 };
@@ -30,7 +45,6 @@ class Interfaz_hm
 
 
 
-bool teclaPulsada (tecla_t );
 
 /*
 void mostrarInfo ()

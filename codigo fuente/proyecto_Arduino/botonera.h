@@ -12,14 +12,14 @@ class Botonera
 {
   public:
     tecla_t MuestrearBotonera();
-    tecla_t GetTeclaPulsada();
+
+    bool ComprobarBotonPosXY (int x, int y);
   protected:
     int pines_fila [2] = { TECLADO_F1, TECLADO_F2 }; //Para el muestreo
     int pines_colu [2] = { TECLADO_C1, TECLADO_C2 }; //Para el muestreo
-    tecla_t TeclaPulsada = TECLA_NINGUNA;
+    tecla_t TeclaEstadoAns = TECLA_NINGUNA;
 
-
-    bool ComprobarBotonPosXY (int x, int y);
+    
 
 };
 
