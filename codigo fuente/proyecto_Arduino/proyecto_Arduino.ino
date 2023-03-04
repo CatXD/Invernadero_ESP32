@@ -2,8 +2,6 @@
 Autor: Diego Carro Fernandez
 
 
-
-
 ***************************************/
 #include "def_pines.h"
 #include "control.h"
@@ -52,16 +50,25 @@ void setup ()
       //coreTask2); // Core where the task should run 
       
   interfaz.DisplayInit();
-  interfaz.DisplayPrint ("AAA");
+  interfaz.DisplayPrint ("AAAAAAA");
 
   pinMode ( LCD_LIGHT, OUTPUT);
 }
   bool a=0, a2=0;
+char  stringBuffer[20];
+String aaa;
 
 void loop(  )
 {
  a2 = !a2;
  digitalWrite ( ACT_Luz, a2);
+
+  aaa = rtc.getTime("%A, %B %d %Y %H:%M:%S") ;
+
+  interfaz.DisplayClear ( );
+ interfaz.DisplayPrint (aaa, 0, 0);
+
+
     delay(1000);//wait ls to refresh
 }
 

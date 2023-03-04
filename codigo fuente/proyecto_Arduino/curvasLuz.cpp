@@ -1,3 +1,17 @@
+#include "CurvasLuz.h"
+
+
+bool EsDeDia (Tiempo_t tiempo)
+{
+  float hora_amanecer = CalcHoraAmanecer(tiempo.mes, tiempo.dia);
+  float hora_anochecer = CalcHoraAnochecer(tiempo.mes, tiempo.dia);
+
+
+return tiempo.hora > hora_amanecer && tiempo.hora < hora_anochecer;
+
+}
+
+
 //Calculo de hora de amanecer
 float CalcHoraAmanecer (int mes, int dia)
 {

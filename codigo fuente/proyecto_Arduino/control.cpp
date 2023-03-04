@@ -1,27 +1,52 @@
 #include "control.h"
 
-Control::Control ()
-{
-  
-}
 
-int Control::Init ()
+
+void Control::Init ()
 {
     dht.begin();
     mutex = xSemaphoreCreateMutex();
 }
 
-int Control::Ciclo_control()
+void Control::EjecutarCicloControl(Tiempo_t time)
+{
+  float humedad, temp;
+
+  //Adquisicion
+  xSemaphoreTake( mutex, portMAX_DELAY );
+  Humedad = dht.readHumidity();
+  Temp = dht.readTemperature();
+
+  humedad = Humedad;
+  temp = Temp;
+  xSemaphoreGive( mutex );
+
+  //Ejecucion control Luz
+
+  //Ejecucion control Temperatura
+  
+
+
+}
+void Control::HabilitarLuz(bool en)
 {
   xSemaphoreTake( mutex, portMAX_DELAY );
-  Hume = dht.readHumidity();
-  Temp = dht.readTemperature();
+  LuzHabilitada = en;
   xSemaphoreGive( mutex );
 }
 
-float Control::getTemp ()
-{}
-float Control::getHume ()
-{}
-void Control::MideTempYHume ()
-{}
+
+float Control::GetTemp()
+{
+  xSemaphoreTake( mutex, portMAX_DELAY );
+  float aux = Temp;
+  xSemaphoreGive( mutex );
+  return aux;
+}
+float Control::GetHumedad ()
+{
+  xSemaphoreTake( mutex, portMAX_DELAY );
+  float aux = Humedad;
+  xSemaphoreGive( mutex );
+  return aux;
+}

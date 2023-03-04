@@ -14,7 +14,7 @@
 #define LCD_RST 2
 #define LCD_LIGHT 0
 
-#define DHT_PIN 14
+#define DHT_PIN 13
 
 #define ACT_Res14 25
 #define ACT_Res16 26
@@ -25,10 +25,10 @@
 #define TECLADO_NUM_COLUM 2
 #define TECLADO_F1 32
 #define TECLADO_F2 33
-#define TECLADO_C1 34
-#define TECLADO_C2 35
+#define TECLADO_C1 34 //Input only
+#define TECLADO_C2 35 //Input only
 
-#define PILOTO_HUM 00
+#define PILOTO 12
 
 
 

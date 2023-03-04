@@ -16,7 +16,11 @@ class Interfaz_hm
   void DisplayInit();
   void DisplayClear ( );
   void DisplayCursor ( int x, int y );
-  void DisplayPrint ( char *);
+  void DisplayPrint ( char* cadena );
+  void DisplayPrint (char* cadena, int x, int y);
+    void DisplayPrint ( String cadena);
+  void DisplayPrint (String cadena, int x, int y);
+  void DisplayLuzFondo (bool OnOff);
 
   //Botonera
 

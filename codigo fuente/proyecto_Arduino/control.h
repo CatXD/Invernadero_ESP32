@@ -3,29 +3,47 @@
 
 #include "def_pines.h"
 #include "DHT.h"
+#include "curvasLuz.h"
 
 #define DHT_TYPE DHT22
 
 
 class Control 
 {
-  public:
-  float getTemp ();
-  float getHume ();
+public:
+  void Init ();
 
-  Control();
+  void EjecutarCicloControl(Tiempo_t time);
+  void HabilitarLuz(bool en);
 
-  int Init();
-  int Ciclo_control();
+  // bool   GetEstadoR1();
+  // bool   GetEstadoR2();
+  // bool   GetEstadoLuz();
+  // bool   GetAlarmaHumedad();
+  // bool   GetNocheDia();
+  // int    GetValorSensor();
+
+
+
+  //DHT22
+  float GetTemp ();
+  float GetHumedad ();
+
+
   
-  protected:
-  DHT dht{12, DHT_TYPE};
-  float Temp;
-  float Hume;
 
+
+protected:
   SemaphoreHandle_t mutex;
 
-  void MideTempYHume ();
+  bool LuzHabilitada = 1;
+
+  //DHT22
+  DHT dht{DHT_PIN, DHT_TYPE};
+  float Temp;
+  float Humedad;
+
+
 
 };
 
