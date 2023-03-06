@@ -2,7 +2,7 @@
 #define CONTROL_H
 
 #include "def_pines.h"
-#include "control_temp.h"
+
 #include "control_luz.h"
 #include "curvasLuz.h"
 
@@ -30,7 +30,7 @@ public:
 
 
 protected:
-  Control_Temp ctrl_temp;
+
   Control_Luz ctrl_luz;
 
 

@@ -6,6 +6,7 @@
 #include <esp_system.h>
 #include "luz.h"
 #include "def_pines.h"
+#include "control_temp.h"
 
 struct Ctrl_luz_estado_st
 {
@@ -14,21 +15,27 @@ struct Ctrl_luz_estado_st
 };
 typedef Ctrl_luz_estado_st Ctrl_luz_estado_t;
 
+struct Ctrl_luzMasTemp_estado_st
+{
+  Ctrl_luz_estado_t estado_ctrl_luz;
+  Ctrl_temp_estado_t estado_ctrl_temp;  
+};
+typedef Ctrl_luzMasTemp_estado_st Ctrl_luzMasTemp_estado_t;
+
 class Control_Luz
 {
 public:
   void Init();
-  Ctrl_luz_estado_t Ejecuta_Control (bool DiaNoche);
+  Ctrl_luzMasTemp_estado_st Ejecuta_Control (bool DiaNoche);
   void SetLuzHabilitada (bool habilitada);
   bool GetLuzHabilitada ();
-  void SetFuncionLimitarPotencia (  void (*fun_limitarPotencia) (bool));
 
 protected:
   bool DiaNoche;
   Luz Luz1;
   bool LuzHabilitada;
 
-    void (*fun_limitarPotencia) (bool);
+  Control_Temp ctrl_temp;
 };
 
 

@@ -113,7 +113,7 @@ Tiempo_t Interfaz_hm::MenuGetTiempo (Tiempo_t ahora)
   while ( paramConfigurando < FP_COUNT )
   {
     DisplayClear ();
-    DisplayPrint ("Configurando ", 0, 0);
+    DisplayPrint ("Conf. ", 0, 0);
     display.display();
     switch (paramConfigurando)
     {
@@ -232,7 +232,7 @@ void Interfaz_hm::DisplayControlEstado(EstadoControl_t estado)
   display.print(buffer);
   display.display();
 
-  sprintf (buffer, "T: %2.1f H: %2.1f\n", estado.Estado_Temp.Temperatura, estado.Estado_Temp.Humedad);
+  sprintf (buffer, "T:%2.1f H:%2.1f\n", estado.Estado_Temp.Temperatura, estado.Estado_Temp.Humedad);
   display.print(buffer);
   display.display();
 

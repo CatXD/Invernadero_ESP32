@@ -29,8 +29,7 @@ class Control_Temp
 
 
   //Consignas y parametros control:
-  float Histeresis_R1 = 2;
-  float Histeresis_R2 = 5;
+  float Histeresis = 5;
   float Consigna_noche = 15;
   float Consigna_dia = 25;
   float Consigna_actual;
