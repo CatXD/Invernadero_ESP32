@@ -215,6 +215,13 @@ bool Interfaz_hm::MenuHabilitacionLuz (bool estado)
   return estado;
 }
 
+char BoolToChar (bool estado)
+{
+  if (estado)
+    return 'S';
+  return 'N';    
+}
+
 void Interfaz_hm::DisplayControlEstado(EstadoControl_t estado)
 {
   char buffer[30];
@@ -228,7 +235,7 @@ void Interfaz_hm::DisplayControlEstado(EstadoControl_t estado)
 
   display.clearDisplay();
   display.setCursor(0, 0);
-  sprintf (buffer, "%2d-%2d-%2d%c%2d:%2d\n", estado.Fecha.ano%2000, estado.Fecha.mes, estado.Fecha.dia, c_diaNoche, estado.Fecha.hora, estado.Fecha.min);
+  sprintf (buffer, "%02d-%02d-%02d%c%02d:%02d\n", estado.Fecha.ano%2000, estado.Fecha.mes, estado.Fecha.dia, c_diaNoche, estado.Fecha.hora, estado.Fecha.min);
   display.print(buffer);
   display.display();
 
@@ -236,6 +243,13 @@ void Interfaz_hm::DisplayControlEstado(EstadoControl_t estado)
   display.print(buffer);
   display.display();
 
+  sprintf (buffer, "Bloqueo R1:%c\n", BoolToChar (estado.Estado_Temp.BloqueoR2));
+  display.print(buffer);
+  display.display();
+
+  sprintf (buffer, "AM:%.1f AN:%.1f\n", estado.HoraAmanecer, estado.HoraAnochecer);
+  display.print(buffer);
+  display.display();
   
   pinMode (LCD_LIGHT, OUTPUT);  
 }

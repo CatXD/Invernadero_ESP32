@@ -12,6 +12,9 @@ struct EstadoControl_st
   Ctrl_luz_estado_t Estado_Luz;
   bool DiaNoche;
   Tiempo_t Fecha;
+  float HoraAmanecer = -1;
+  float HoraAnochecer = -1;
+
 };
 typedef EstadoControl_st EstadoControl_t;
 

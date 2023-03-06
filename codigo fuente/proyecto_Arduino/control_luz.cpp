@@ -17,9 +17,9 @@ Ctrl_luzMasTemp_estado_t Control_Luz::Ejecuta_Control (bool DiaNoche)
 
   //Ejecucion control
   if (DiaNoche)
-    presalida_Luz = false;
-  else
     presalida_Luz = true;
+  else
+    presalida_Luz = false;
 
   //Compruebo habilitacion
   if (!LuzHabilitada)

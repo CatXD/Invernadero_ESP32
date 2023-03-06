@@ -3,7 +3,6 @@
 void Control::Init ()
 {
   ctrl_luz.Init();
-
   mutexEstado = xSemaphoreCreateMutex();
   mutexCtrl = xSemaphoreCreateMutex();
 }
@@ -14,8 +13,16 @@ EstadoControl_t Control::EjecutarCicloControl(Tiempo_t tiempo)
 
   EstadoControl_t nuevo_estado;
   bool esDeDia;
+
   //Calculo si es de dia o de noche
-  esDeDia = EsDeDia (tiempo);
+  float hora_amanecer = CalcHoraAmanecer(tiempo.mes, tiempo.dia);
+  float hora_anochecer = CalcHoraAnochecer(tiempo.mes, tiempo.dia);
+  esDeDia = ((tiempo.hora + tiempo.min/60.0) > hora_amanecer) && ((tiempo.hora + tiempo.min/60.0) < hora_anochecer);
+
+  Serial.println ("Amanecer:");
+  Serial.println (hora_amanecer);
+  Serial.println ("Anochecer:");
+  Serial.println (hora_anochecer);
 
   xSemaphoreTake( mutexCtrl, portMAX_DELAY );
 
@@ -29,6 +36,9 @@ EstadoControl_t Control::EjecutarCicloControl(Tiempo_t tiempo)
   nuevo_estado.Estado_Temp = reporte_luzMasTemp.estado_ctrl_temp;
   nuevo_estado.Estado_Luz = reporte_luzMasTemp.estado_ctrl_luz;
   nuevo_estado.Fecha = tiempo;
+  nuevo_estado.DiaNoche = esDeDia;
+  nuevo_estado.HoraAmanecer = hora_amanecer;
+  nuevo_estado.HoraAnochecer = hora_anochecer;
   SetEstado(nuevo_estado);
   return nuevo_estado;
 }

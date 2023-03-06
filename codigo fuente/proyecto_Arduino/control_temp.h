@@ -11,6 +11,7 @@ struct Ctrl_temp_estado_st
 {
   float Temperatura;
   float Humedad;
+  float Consigna;
   bool BloqueoR2;
 };
 typedef Ctrl_temp_estado_st Ctrl_temp_estado_t;
@@ -29,15 +30,18 @@ class Control_Temp
 
 
   //Consignas y parametros control:
-  float Histeresis = 5;
-  float Consigna_noche = 15;
+  float Histeresis = 2;
+  float Consigna_noche = 17;
   float Consigna_dia = 25;
   float Consigna_actual;
+  float Diff_ConsignaR1_ConsignaR2 = 4;
 
   //Medidas
   float Temperatura;
   float Humedad;
 
+  //metodos privados
+  float CalcConsignaR2 (float consignaTemp);
 };
 
 #endif

@@ -9,7 +9,7 @@ void Control_Temp::Init()
 
 Ctrl_temp_estado_t Control_Temp::Ejecuta_Control (bool DiaNoche)
 {
-  float error;
+  float consigna_R2;
   bool preR1, preR2;
   Ctrl_temp_estado_t reporte;
 
@@ -23,27 +23,26 @@ Ctrl_temp_estado_t Control_Temp::Ejecuta_Control (bool DiaNoche)
   else
     Consigna_actual = Consigna_noche;
 
-  //Ejecucion control Temperatura
-  error = Consigna_actual - Temperatura;
+  consigna_R2 = CalcConsignaR2 (Consigna_actual);
 
   //Histeresis R1:
   if (R1.GetOnOff())
   {
-    preR1 = error > Histeresis_R1;
+    preR1 = Temperatura < Consigna_actual;
   }
   else
   {
-    preR1 = error < 0;
+    preR1 = Temperatura < Consigna_actual - Histeresis;
   }
 
   //Histeresis R2:
   if (R2.GetOnOff())
   {
-    preR2 = error > Histeresis_R2;
+    preR2 = Temperatura < consigna_R2;
   }
   else
   {
-    preR2 = error < 0;
+    preR2 = Temperatura < consigna_R2 - Histeresis;
   }
 
   //Salidas
@@ -57,6 +56,7 @@ Ctrl_temp_estado_t Control_Temp::Ejecuta_Control (bool DiaNoche)
   //Reporte
   reporte.Humedad = Humedad;
   reporte.Temperatura = Temperatura;
+  reporte.Consigna = Consigna_actual;
   reporte.BloqueoR2 = R2.GetBloqueo();
   return reporte;
 
@@ -67,3 +67,7 @@ void Control_Temp::BloqueoR2 (bool bloqueo)
   R2.SetBloqueo(bloqueo);
 }
 
+float Control_Temp::CalcConsignaR2 (float consignaTemp)
+{
+  return consignaTemp - Diff_ConsignaR1_ConsignaR2;
+}
