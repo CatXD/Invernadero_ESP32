@@ -82,7 +82,7 @@ void loop(  ) //Control
   estadoControl = control.EjecutarCicloControl(tiempo );
 
   interfaz.DisplayControlEstado(estadoControl);
-
+  pinMode(LCD_LIGHT,INPUT);
   delay(5000);//wait ls to refresh
 
 

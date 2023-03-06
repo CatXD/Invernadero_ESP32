@@ -19,11 +19,6 @@ EstadoControl_t Control::EjecutarCicloControl(Tiempo_t tiempo)
   float hora_anochecer = CalcHoraAnochecer(tiempo.mes, tiempo.dia);
   esDeDia = ((tiempo.hora + tiempo.min/60.0) > hora_amanecer) && ((tiempo.hora + tiempo.min/60.0) < hora_anochecer);
 
-  Serial.println ("Amanecer:");
-  Serial.println (hora_amanecer);
-  Serial.println ("Anochecer:");
-  Serial.println (hora_anochecer);
-
   xSemaphoreTake( mutexCtrl, portMAX_DELAY );
 
   //Ejecucion control Luz
