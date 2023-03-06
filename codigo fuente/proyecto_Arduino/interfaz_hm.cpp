@@ -20,7 +20,7 @@ void Interfaz_hm::DisplayInit()
 void Interfaz_hm::DisplayPrint (char* cadena)
 {
     display.setTextSize(1); 
-    display.println(cadena);
+    display.print(cadena);
     display.display();
     pinMode (LCD_LIGHT, OUTPUT);
 }
@@ -28,7 +28,7 @@ void Interfaz_hm::DisplayPrint (char* cadena)
 void Interfaz_hm::DisplayPrint (char* cadena, int x, int y)
 {
     display.setCursor(x,y);
-    display.println(cadena);
+    display.print(cadena);
     display.display();
     pinMode (LCD_LIGHT, OUTPUT);
 }
@@ -36,7 +36,7 @@ void Interfaz_hm::DisplayPrint (char* cadena, int x, int y)
 void Interfaz_hm::DisplayPrint (String cadena)
 {
     display.setTextSize(1); 
-    display.println(cadena);
+    display.print(cadena);
     display.display();
     pinMode (LCD_LIGHT, OUTPUT);
 }
@@ -44,7 +44,7 @@ void Interfaz_hm::DisplayPrint (String cadena)
 void Interfaz_hm::DisplayPrint (String cadena, int x, int y)
 {
     display.setCursor(x,y);
-    display.println(cadena);
+    display.print(cadena);
     display.display();
     pinMode (LCD_LIGHT, OUTPUT);
 }
@@ -60,6 +60,7 @@ void Interfaz_hm::DisplayLuzFondo(bool OnOff)
 void Interfaz_hm::DisplayApagar()
 {
   display.clearDisplay();
+  display.display();
   pinMode (LCD_LIGHT, INPUT);
 }
 
@@ -74,9 +75,9 @@ void  Interfaz_hm::Espera1s ()
 
 void Interfaz_hm::DisplayFechaYHora (int dia, int mes, int ano, int hora, int min, int sec)
 {
-  char buffer[6];  //string buffer
-  sprintf(buffer, "%2d-%2d-%4d\n%2d:%2d:%2d", dia, mes, ano, hora, min, sec);
-  display.println(buffer);
+  char buffer[20];  //string buffer
+  sprintf(buffer, "%02d-%02d-%04d\n%02d:%02d:%02d", dia, mes, ano, hora, min, sec);
+  display.print(buffer);
   display.display();
   pinMode (LCD_LIGHT, OUTPUT);
 }
@@ -84,9 +85,9 @@ void Interfaz_hm::DisplayFechaYHora (int dia, int mes, int ano, int hora, int mi
 
 void Interfaz_hm::DisplayFechaYHora (Tiempo_t fecha)
 {
-  char buffer[6];  //string buffer
-  sprintf(buffer, "%2d-%2d-%4d\n%2d:%2d:%2d", fecha.dia, fecha.mes, fecha.ano, fecha.hora, fecha.min, fecha.sec);
-  display.println(buffer);
+  char buffer[20];  //string buffer
+  sprintf(buffer, "%02d-%02d-%04d\n%02d:%02d:%02d", fecha.dia, fecha.mes, fecha.ano, fecha.hora, fecha.min, fecha.sec);
+  display.print(buffer);
   display.display();
   pinMode (LCD_LIGHT, OUTPUT);
 }
@@ -98,7 +99,7 @@ Tiempo_t Interfaz_hm::MenuGetTiempo (Tiempo_t ahora)
   int paramConfigurando = FP_DIA; //Parametro que estoy configurando
   int configurado[FP_COUNT];  //Copia de la configuracion actual sobre la que escribo y leo
 
-  tecla_t teclaPulsada; //Tecla actual pulsada
+  tecla_t teclaPulsada = TECLA_NINGUNA; //Tecla actual pulsada
   Tiempo_t resultado; //Presalida de la funcion
 
 
@@ -112,17 +113,22 @@ Tiempo_t Interfaz_hm::MenuGetTiempo (Tiempo_t ahora)
   while ( paramConfigurando < FP_COUNT )
   {
     DisplayClear ();
-    DisplayPrint ("Configurando, 0, 0");
+    DisplayPrint ("Configurando ", 0, 0);
+    display.display();
     switch (paramConfigurando)
     {
       case FP_DIA:
         DisplayPrint ("Dia:\n");
+        break;
       case FP_MES:
         DisplayPrint ("Mes:\n");
+        break;
       case FP_ANO:
         DisplayPrint ("Ano:\n");
+        break;
       case FP_HORA:
         DisplayPrint ("Hora:\n");
+        break;
       case FP_MIN:
         DisplayPrint ("Minuto:\n");
       break;
@@ -131,7 +137,8 @@ Tiempo_t Interfaz_hm::MenuGetTiempo (Tiempo_t ahora)
     }
 
     DisplayFechaYHora (configurado[FP_DIA], configurado[FP_MES], configurado[FP_ANO], configurado[FP_HORA], configurado[FP_MIN], 0);
-
+    
+    teclaPulsada = TECLA_NINGUNA;
     while (teclaPulsada == TECLA_NINGUNA)
     {
       teclaPulsada = botonera.MuestrearBotonera();
@@ -172,4 +179,63 @@ Tiempo_t Interfaz_hm::MenuGetTiempo (Tiempo_t ahora)
   
 }
 
+bool Interfaz_hm::MenuHabilitacionLuz (bool estado)
+{
+  tecla_t teclaPulsada = TECLA_NINGUNA; //Tecla actual pulsada
 
+  while ( teclaPulsada != TECLA_ACEPTAR )
+  {
+    DisplayClear ();
+    DisplayPrint ("Luz habilitada: ", 0, 0);
+    if (estado)
+      DisplayPrint ("Si");
+    else
+      DisplayPrint ("No");
+
+
+    teclaPulsada = TECLA_NINGUNA;
+    while (teclaPulsada == TECLA_NINGUNA)
+    {
+      teclaPulsada = botonera.MuestrearBotonera();
+    }
+
+    switch(teclaPulsada)
+    {
+      case TECLA_MAS:
+        estado = !estado;
+        break;
+      case TECLA_MENOS:
+        estado = !estado;
+        break;
+    }
+  }
+
+  Espera1s(); Espera1s(); Espera1s();
+  DisplayApagar();
+  return estado;
+}
+
+void Interfaz_hm::DisplayControlEstado(EstadoControl_t estado)
+{
+  char buffer[30];
+  char c_diaNoche;
+
+  if (estado.DiaNoche)
+    c_diaNoche = 'D';
+  else
+    c_diaNoche = 'N';
+
+
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  sprintf (buffer, "%2d-%2d-%2d%c%2d:%2d\n", estado.Fecha.ano%2000, estado.Fecha.mes, estado.Fecha.dia, c_diaNoche, estado.Fecha.hora, estado.Fecha.min);
+  display.print(buffer);
+  display.display();
+
+  sprintf (buffer, "T: %2.1f H: %2.1f\n", estado.Estado_Temp.Temperatura, estado.Estado_Temp.Humedad);
+  display.print(buffer);
+  display.display();
+
+  
+  pinMode (LCD_LIGHT, OUTPUT);  
+}

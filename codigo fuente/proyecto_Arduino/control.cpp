@@ -1,52 +1,60 @@
 #include "control.h"
 
-
-
 void Control::Init ()
 {
-    dht.begin();
-    mutex = xSemaphoreCreateMutex();
+  ctrl_luz.Init();
+  ctrl_temp.Init();
+  mutexEstado = xSemaphoreCreateMutex();
+  mutexCtrl = xSemaphoreCreateMutex();
 }
 
-void Control::EjecutarCicloControl(Tiempo_t time)
+EstadoControl_t Control::EjecutarCicloControl(Tiempo_t tiempo)
 {
-  float humedad, temp;
+  Ctrl_luz_estado_t reporte_luz;
+  Ctrl_temp_estado_t reporte_temp;
+  EstadoControl_t nuevo_estado;
+  bool esDeDia;
+  //Calculo si es de dia o de noche
+  esDeDia = EsDeDia (tiempo);
 
-  //Adquisicion
-  xSemaphoreTake( mutex, portMAX_DELAY );
-  Humedad = dht.readHumidity();
-  Temp = dht.readTemperature();
-
-  humedad = Humedad;
-  temp = Temp;
-  xSemaphoreGive( mutex );
+  xSemaphoreTake( mutexCtrl, portMAX_DELAY );
 
   //Ejecucion control Luz
+  reporte_luz = ctrl_luz.Ejecuta_Control(esDeDia);
 
   //Ejecucion control Temperatura
+  reporte_temp = ctrl_temp.Ejecuta_Control(esDeDia);
+
+  xSemaphoreGive( mutexCtrl );
   
-
-
+  nuevo_estado.Estado_Temp = reporte_temp;
+  nuevo_estado.Estado_Luz = reporte_luz;
+  nuevo_estado.Fecha = tiempo;
+  SetEstado(nuevo_estado);
+  return nuevo_estado;
 }
+
 void Control::HabilitarLuz(bool en)
 {
-  xSemaphoreTake( mutex, portMAX_DELAY );
-  LuzHabilitada = en;
-  xSemaphoreGive( mutex );
+  ctrl_luz.SetLuzHabilitada(en);
 }
 
-
-float Control::GetTemp()
+bool Control::GetHabilitacionLuz()
 {
-  xSemaphoreTake( mutex, portMAX_DELAY );
-  float aux = Temp;
-  xSemaphoreGive( mutex );
-  return aux;
+return ctrl_luz.GetLuzHabilitada();  
 }
-float Control::GetHumedad ()
+
+EstadoControl_t  Control::GetEstado()
 {
-  xSemaphoreTake( mutex, portMAX_DELAY );
-  float aux = Humedad;
-  xSemaphoreGive( mutex );
-  return aux;
+  EstadoControl_t estado;
+  xSemaphoreTake( mutexEstado, portMAX_DELAY );
+  estado = Estado;
+  xSemaphoreGive( mutexEstado );
+  return estado;
+}
+void  Control::SetEstado(EstadoControl_t estado)
+{
+  xSemaphoreTake( mutexEstado, portMAX_DELAY );
+  Estado = estado;
+  xSemaphoreGive( mutexEstado );
 }

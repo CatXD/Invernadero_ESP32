@@ -18,9 +18,6 @@ class Botonera
     int pines_fila [2] = { TECLADO_F1, TECLADO_F2 }; //Para el muestreo
     int pines_colu [2] = { TECLADO_C1, TECLADO_C2 }; //Para el muestreo
     tecla_t TeclaEstadoAns = TECLA_NINGUNA;
-
-    
-
 };
 
 

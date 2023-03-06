@@ -2,49 +2,41 @@
 #define CONTROL_H
 
 #include "def_pines.h"
-#include "DHT.h"
+#include "control_temp.h"
+#include "control_luz.h"
 #include "curvasLuz.h"
 
-#define DHT_TYPE DHT22
-
+struct EstadoControl_st 
+{
+  Ctrl_temp_estado_t Estado_Temp;
+  Ctrl_luz_estado_t Estado_Luz;
+  bool DiaNoche;
+  Tiempo_t Fecha;
+};
+typedef EstadoControl_st EstadoControl_t;
 
 class Control 
 {
 public:
   void Init ();
 
-  void EjecutarCicloControl(Tiempo_t time);
+  EstadoControl_t EjecutarCicloControl(Tiempo_t time);
   void HabilitarLuz(bool en);
 
-  // bool   GetEstadoR1();
-  // bool   GetEstadoR2();
-  // bool   GetEstadoLuz();
-  // bool   GetAlarmaHumedad();
-  // bool   GetNocheDia();
-  // int    GetValorSensor();
+  bool  GetHabilitacionLuz();
 
-
-
-  //DHT22
-  float GetTemp ();
-  float GetHumedad ();
-
-
-  
+  EstadoControl_t  GetEstado();
+  void  SetEstado(EstadoControl_t estado);
 
 
 protected:
-  SemaphoreHandle_t mutex;
-
-  bool LuzHabilitada = 1;
-
-  //DHT22
-  DHT dht{DHT_PIN, DHT_TYPE};
-  float Temp;
-  float Humedad;
+  Control_Temp ctrl_temp;
+  Control_Luz ctrl_luz;
 
 
-
+  SemaphoreHandle_t mutexEstado;
+  SemaphoreHandle_t mutexCtrl;
+  EstadoControl_t  Estado;
 };
 
 

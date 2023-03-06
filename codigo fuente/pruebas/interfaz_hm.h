@@ -7,8 +7,6 @@
 #include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_PCD8544.h>
-#include "botonera.h"
-#include "control.h"
 
 
 class Interfaz_hm 
@@ -26,8 +24,6 @@ class Interfaz_hm
   void DisplayLuzFondo (bool OnOff);
   void DisplayApagar();
 
-  void DisplayControlEstado(EstadoControl_t estado);
-
   void Espera10ms ();
   void Espera1s ();
 
@@ -35,12 +31,7 @@ class Interfaz_hm
   void DisplayFechaYHora (int dia, int mes, int ano, int hora, int min, int sec);
 
 
-  //Botonera
-  Botonera botonera;
 
-  //Configuracion
-  Tiempo_t MenuGetTiempo (Tiempo_t ahora);//Configurar Hora
-  bool MenuHabilitacionLuz (bool estado);
 
 
 
